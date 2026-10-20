@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "一餐之后 · 校园看板",
+  "usingComponents": {
+    "nav-rail": "/components/nav-rail"
+  }
+}

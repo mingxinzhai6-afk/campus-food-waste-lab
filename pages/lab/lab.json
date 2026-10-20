@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "一餐之后 · 策略实验室",
+  "usingComponents": {
+    "nav-rail": "/components/nav-rail"
+  }
+}

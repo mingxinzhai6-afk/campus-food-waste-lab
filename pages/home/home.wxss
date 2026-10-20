@@ -1,0 +1,645 @@
+/* ---------- 开场遮罩 ---------- */
+.intro-splash {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: linear-gradient(135deg, #dcebf7 0%, #f2ede2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: splash-in 0.5s ease both;
+}
+.intro-splash.leaving {
+  animation: splash-out 0.5s ease both;
+}
+@keyframes splash-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes splash-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.splash-inner {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  max-width: 640px;
+}
+.splash-mark {
+  width: 96px;
+  height: 96px;
+  flex: none;
+}
+.splash-copy .eyebrow {
+  margin-bottom: 4px;
+}
+.splash-title {
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #2f4256;
+}
+.splash-title .em {
+  color: #e0763c;
+  font-style: normal;
+}
+.splash-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #5b7186;
+}
+.splash-foot {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin-top: 12px;
+  font-size: 10.5px;
+  color: #9aabbb;
+}
+.splash-foot .en {
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #c26130;
+}
+
+/* ---------- STEP 1 餐厅卡片 ---------- */
+.pick-head {
+  margin-bottom: 10px;
+}
+.pick-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+.canteen-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 730px) {
+  .canteen-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.canteen-card {
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  border-radius: var(--r-card);
+  box-shadow: 0 5px 0 -1px rgba(60, 85, 112, 0.14);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.canteen-photo-wrap {
+  position: relative;
+  height: 108px;
+  flex: none;
+}
+.canteen-photo {
+  width: 100%;
+  height: 100%;
+}
+.zone-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  background: rgba(255, 253, 248, 0.95);
+  border: 1.5px solid #35506b;
+  border-radius: 8px 4px 7px 5px / 5px 7px 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  color: #2f4256;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.zone-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #58a87a;
+}
+.canteen-body {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+.canteen-name {
+  font-size: 15px;
+  font-weight: 800;
+}
+.canteen-wait {
+  font-size: 10.5px;
+  color: #7d8f9e;
+}
+.canteen-featured {
+  font-size: 10.5px;
+  color: #b98a63;
+}
+.canteen-enter {
+  margin-top: auto;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.campus-source {
+  margin-top: 10px;
+  font-size: 10.5px;
+  color: #9aabbb;
+  line-height: 1.5;
+}
+
+/* ---------- STEP 2 表单 ---------- */
+/* 记录页整体压紧，让两块板块尽量在手机横屏一屏内看全 */
+.main {
+  padding: 8px 16px 10px;
+}
+.page-title {
+  margin: 2px 0 6px;
+}
+.two-col > .panel {
+  padding: 7px 10px;
+}
+.panel-heading {
+  margin-bottom: 3px;
+}
+.panel-heading .kicker {
+  font-size: 10px;
+}
+.quiet-button {
+  padding: 3px 6px;
+  font-size: 10px;
+}
+.primary-button.cta {
+  padding: 4px 10px;
+  font-size: 11.5px;
+}
+.field {
+  margin-bottom: 2px;
+}
+.field-label {
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+/* 记录页两栏等宽；右侧「实时估算」与左侧表单等高（网格默认 stretch），按钮沉到底部。
+   窄屏（<730px）仍走 app.wxss 里的单列回退。 */
+@media (min-width: 951px) {
+  .two-col {
+    grid-template-columns: calc(50% - 7px) calc(50% - 7px);
+  }
+}
+.two-col {
+  align-items: stretch;
+}
+.live-estimate {
+  display: flex;
+  flex-direction: column;
+}
+.live-estimate .cta {
+  margin-top: auto;
+}
+.panel-h2 {
+  font-size: 13px;
+}
+.field {
+  margin-bottom: 10px;
+}
+.field-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+/* ---- 太阳时钟：CSS 半环刻度盘（不用 canvas，随页面正常滚动） ---- */
+.sun-dial {
+  position: relative;
+  width: 100%;
+  padding-top: 4px;
+}
+/* 时间放在刻度盘的圆心空档里，不占额外高度也不会被太阳压住 */
+.dial-now {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 26px;
+  text-align: center;
+}
+.dial-now b {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: #2f4256;
+  line-height: 1.1;
+}
+.dial-now text {
+  font-size: 8.5px;
+  color: #7d8f9e;
+}
+.dial-track {
+  position: relative;
+  width: 140px;
+  height: 70px;
+  margin: 0 auto;
+}
+.dial-clip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.dial-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+}
+/* 内孔必须按 140×140 的圆来定位（外层只露出上半，高度是 70） */
+.dial-hole {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 122px;
+  height: 122px;
+  border-radius: 50%;
+  background: var(--paper);
+}
+.dial-tick {
+  position: absolute;
+  width: 2px;
+  height: 9px;
+}
+.dial-tick-line {
+  display: block;
+  width: 2px;
+  height: 9px;
+  background: #c3d7e8;
+}
+.dial-tick-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 8.5px;
+  color: #9aabbb;
+  white-space: nowrap;
+}
+.dial-sun {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+}
+.sun-ray {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 5.5px;
+  margin: -2.75px 0 0 -1px;
+  background: #e9a24a;
+  border-radius: 2px;
+}
+.sun-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 38% 32%, #ffd489, #f4a94f 62%, #e79a3e);
+  border: 2px solid #fffdf8;
+  box-shadow: 0 0 0 3px rgba(255, 207, 135, 0.4), 0 0 10px 4px rgba(255, 207, 135, 0.5);
+}
+.sun-eye {
+  position: absolute;
+  top: 5px;
+  width: 2.6px;
+  height: 2.6px;
+  border-radius: 50%;
+  background: #8a4b12;
+}
+.sun-eye.left {
+  left: 4px;
+}
+.sun-eye.right {
+  right: 4px;
+}
+.sun-mouth {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 7px;
+  height: 4px;
+  margin-left: -3.5px;
+  border-bottom: 1.5px solid #8a4b12;
+  border-radius: 0 0 7px 7px;
+}
+.dial-ends {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  margin: 0 auto;
+  font-size: 8.5px;
+  color: #8fa5b8;
+}
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+@media (max-width: 730px) {
+  .food-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .food-photo {
+    height: 64px;
+  }
+}
+.food-cell {
+  position: relative;
+  border: 2px solid #d5e2ee;
+  border-radius: var(--r-mid);
+  overflow: hidden;
+  background: #fffdf8;
+  padding-bottom: 2px;
+}
+.food-cell.selected {
+  border-color: #e0763c;
+  background: #fdf1e8;
+}
+.food-photo {
+  width: 100%;
+  height: 64px;
+}
+.food-name {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 3px 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+.food-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: none;
+}
+.food-pick {
+  font-size: 8px;
+  color: #9aabbb;
+  padding: 0 4px;
+}
+.food-cell.selected .food-pick {
+  color: #c26130;
+  font-weight: 700;
+}
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.range-cap {
+  font-size: 9.5px;
+  color: #9aabbb;
+  flex: none;
+}
+.range-slider {
+  flex: 1;
+  margin: 0;
+}
+.picker-value {
+  background: #fffdf8;
+  border: 2px solid #b9cbdc;
+  border-radius: var(--r-btn);
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  max-width: 190px;
+}
+.picker-caret {
+  color: #9aabbb;
+}
+
+/* ---------- 实时估算 ---------- */
+.live-body {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.live-ring-col {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.live-ring {
+  width: 96px;
+  height: 96px;
+}
+.live-hole {
+  width: 62px;
+  height: 62px;
+}
+.live-hole b {
+  font-size: 15px;
+}
+.live-hole .hole-cap {
+  font-size: 8.5px;
+}
+.live-caption {
+  font-size: 9.5px;
+  color: #7d8f9e;
+  text-align: center;
+}
+
+/* 泔水桶 */
+.wc {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.wc-bucket {
+  position: relative;
+  width: 78px;
+  height: 106px;
+  flex: none;
+  background: #f6f2ea;
+  border: 2px solid #b98a63;
+  border-radius: 8px 8px 12px 12px / 6px 6px 14px 14px;
+  overflow: hidden;
+}
+.wc-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #eec27f, #dd9d52);
+  transition: height 0.25s ease;
+}
+.wc-surface {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  background: rgba(255, 246, 230, 0.75);
+  border-radius: 50%;
+}
+.wc-mark {
+  position: absolute;
+  left: 3px;
+  font-size: 8.5px;
+  color: #a98d6f;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transform: translateY(50%);
+}
+/* 满量程刻度贴着桶口，标签整行下移才不会越过桶沿被裁掉 */
+.wc-mark.top {
+  transform: translateY(100%);
+  align-items: flex-start;
+}
+.wc-mark-label {
+  font-size: 8.5px;
+  color: #a98d6f;
+}
+.wc-tick {
+  width: 7px;
+  height: 1.5px;
+  background: #c9ab89;
+  display: inline-block;
+}
+.wc-baseline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1.5px dashed #4a86c8;
+  display: flex;
+  align-items: center;
+}
+.wc-bl {
+  width: 100%;
+  display: block;
+}
+.wc-bl-label {
+  position: absolute;
+  right: 3px;
+  top: -13px;
+  font-size: 8.5px;
+  color: #4a86c8;
+  background: rgba(255, 253, 248, 0.85);
+  border-radius: 4px;
+  padding: 0 3px;
+  white-space: nowrap;
+}
+.wc-readout b {
+  font-size: 19px;
+  font-weight: 800;
+  color: #c26130;
+}
+.wc-unit {
+  font-size: 10.5px;
+  margin-left: 2px;
+  color: #7d8f9e;
+  font-weight: 600;
+}
+.wc-sub {
+  display: block;
+  font-size: 10px;
+  color: #7d8f9e;
+  margin-top: 1px;
+}
+
+/* 四个数值条：竖排，每行「数值 + 说明」下一条进度条，颜色区分指标 */
+.live-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 5px;
+}
+.live-stat {
+  position: relative;
+}
+.live-stat-num {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.live-stat-num b {
+  font-size: 13px;
+  font-weight: 800;
+}
+.live-stat-num text {
+  font-size: 9px;
+  color: #7d8f9e;
+}
+.live-stat .bar-track {
+  height: 4px;
+  border: none;
+  border-radius: 2px;
+  background: #e9eef4;
+}
+.live-stat .bar-track i {
+  border-radius: 2px;
+}
+.live-stat.kg .bar-track i {
+  background: #58a87a;
+}
+.live-stat.water .bar-track i {
+  background: #4a86c8;
+}
+.live-stat.co2 .bar-track i {
+  background: #e0763c;
+}
+.live-stat.money .bar-track i {
+  background: #3c5570;
+}
+.cta {
+  width: 100%;
+}
+
+/* 矮屏（横屏高度 <= 480px）：压缩餐厅卡，保证「进入并开始记录」完整可见 */
+@media (max-height: 480px) {
+  .canteen-photo-wrap {
+    height: 72px;
+  }
+  .canteen-body {
+    padding: 8px 10px;
+    gap: 3px;
+  }
+  .canteen-name {
+    font-size: 14px;
+  }
+  .canteen-wait {
+    font-size: 10px;
+  }
+  .canteen-featured {
+    font-size: 10px;
+  }
+  .canteen-enter {
+    padding: 5px 8px;
+    font-size: 11.5px;
+  }
+  .campus-source {
+    margin-top: 6px;
+    font-size: 9.5px;
+  }
+}

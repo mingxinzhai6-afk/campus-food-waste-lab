@@ -1,0 +1,263 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="campus" />
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">03 / 泔水桶演示看板</view>
+        <view class="campus-h1">今天，三个食堂的餐桌<text class="em">正在发生什么？</text></view>
+        <view class="muted">学苑餐厅 · 学海餐厅 · 学者餐厅（按学生生活区分列）</view>
+      </view>
+      <view class="data-pill">● 三餐厅横向看板<text>演示时间可自己选择，泔水量按它推算</text></view>
+    </view>
+
+    <!-- 演示时间控制条 -->
+    <view class="panel sim-bar sketch-in">
+      <view class="sim-group sim-clock">
+        <view class="kicker">演示时间</view>
+        <view class="sim-wheels">
+          <picker-view class="sim-picker" value="{{simIndex}}" bindchange="onSimWheel" bindpickstart="onSimPickStart" indicator-style="height:24px;">
+            <picker-view-column>
+              <view wx:for="{{simHours}}" wx:key="*this" class="sim-cell">{{item}}</view>
+            </picker-view-column>
+            <picker-view-column>
+              <view wx:for="{{simMinutes}}" wx:key="*this" class="sim-cell">{{item}}</view>
+            </picker-view-column>
+          </picker-view>
+          <view class="sim-now">{{clock}}</view>
+        </view>
+      </view>
+      <view class="sim-group">
+        <view class="kicker">快捷时段</view>
+        <view class="chip-row">
+          <view class="chip {{activeMeal === item.meal ? 'on' : ''}}" wx:for="{{mealChips}}" wx:key="meal" bindtap="pickMeal" data-meal="{{item.meal}}">{{item.meal}} {{item.clock}}</view>
+        </view>
+      </view>
+      <view class="sim-group">
+        <view class="kicker">播放控制</view>
+        <view class="chip-row">
+          <button class="primary-button sim-play" bindtap="togglePlay">{{playLabel}}</button>
+          <button class="quiet-button" bindtap="resetSim">↺ 重置演示</button>
+          <view class="sim-flag {{flagLive ? 'live' : ''}}">{{flagText}}</view>
+        </view>
+      </view>
+      <view class="sim-hint">拨动滚轮即可手动选演示时刻（拨动时自动暂停播放）· 泔水量按它推算 · 自动播放每 2 秒前进 10 分钟</view>
+    </view>
+
+    <!-- 三食堂当前状态 -->
+    <view class="rows-grid sketch-in">
+      <view class="row-card" wx:for="{{rows}}" wx:key="id">
+        <view class="row-head"><b>{{item.name}}</b><text class="row-area">{{item.area}}</text></view>
+        <view class="row-num"><b>{{item.current}}</b><text>kg · 当前泔水</text></view>
+        <view class="bar-track"><i style="width:{{item.fillBar}}%; background:#4a86c8;" /></view>
+        <view class="row-meta"><text>{{item.fullBins}} 个整桶 + 当前桶 {{item.percent}}%</text><text class="status-chip {{item.nearFull ? 'warn' : ''}}">{{item.nearFull ? '装载较高' : '继续观察'}}</text></view>
+      </view>
+    </view>
+
+    <!-- 四块图表面板（图形用 CSS / 普通元素绘制，与文字同层，随页面滚动） -->
+    <view class="viz-grid">
+      <view class="panel viz-panel" bindtap="openZoom" data-id="viz-fill">
+        <view class="viz-heading"><view class="kicker">装载结构</view><view class="viz-title">三食堂当前重量构成</view><view class="zoom-hint">⤢ 放大</view></view>
+        <view class="ring-body stack">
+          <view class="ring-breakdown">
+            <view class="ring-disc" style="{{fillRingStyle}}">
+              <view class="ring-hole"><b>{{fillTotal}}</b><text class="hole-cap">kg · 当前合计</text></view>
+            </view>
+          </view>
+          <view class="ring-legend">
+            <view class="ring-legend-item" wx:for="{{fillLegend}}" wx:key="label">
+              <i class="lg-dot" style="background:{{item.color}};" />
+              <text class="rl-label">{{item.label}}<text class="rl-pct">{{item.pct}}</text></text>
+              <text class="rl-kg">{{item.kg}} kg</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="panel viz-panel" bindtap="openZoom" data-id="viz-meal">
+        <view class="viz-heading">
+          <view>
+            <view class="kicker">时段贡献</view>
+            <view class="viz-title">早餐 / 午餐 / 晚餐重量堆叠</view>
+          </view>
+          <view class="chart-legend"><view class="lg-item" wx:for="{{mealLegend}}" wx:key="meal"><i class="lg-dot" style="background:{{item.color}};" /><text>{{item.meal}}</text></view></view>
+          <view class="zoom-hint">⤢ 放大</view>
+        </view>
+        <template is="tpl-bars" data="{{...barsView}}" />
+      </view>
+      <view class="panel viz-panel" bindtap="openZoom" data-id="viz-menu">
+        <view class="viz-heading">
+          <view>
+            <view class="kicker">菜品画像</view>
+            <view class="viz-title">价格 × 分量散点图</view>
+            <view class="viz-sub">每个点是一个演示菜品 · 横轴价格 ￥ · 纵轴分量 g/10</view>
+          </view>
+          <view class="zoom-hint">⤢ 放大</view>
+        </view>
+        <template is="tpl-scatter" data="{{...scatterView}}" />
+      </view>
+      <view class="panel viz-panel" bindtap="openZoom" data-id="viz-ring">
+        <view class="viz-heading">
+          <view>
+            <view class="kicker">类别构成</view>
+            <view class="viz-title">五类食物的泔水占比</view>
+            <view class="viz-sub">按主要食物汇总 · 主食类占约六成</view>
+          </view>
+          <view class="zoom-hint">⤢ 放大</view>
+        </view>
+        <view class="ring-body">
+          <view class="ring-breakdown">
+            <view class="ring-disc" style="{{ringStyle}}">
+              <view class="ring-hole"><b>{{ringCenter}}</b><text class="hole-cap">kg · 样本合计</text></view>
+            </view>
+          </view>
+          <view class="ring-legend">
+            <view class="ring-legend-item" wx:for="{{ringLegend}}" wx:key="label">
+              <i class="lg-dot" style="background:{{item.color}};" />
+              <text class="rl-label">{{item.label}}<text class="rl-pct">{{item.pct}}</text></text>
+              <text class="rl-kg">{{item.kg}} kg</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 两张表：运营快照在上，时段拆解在下（都铺满整行，列宽自动分配） -->
+    <view class="tables-stack">
+      <view class="panel table-panel sketch-in">
+        <view class="panel-heading"><view><view class="kicker">运营快照 · 三食堂横向比较</view><view class="panel-h2">餐厅现状一览</view></view></view>
+        <view class="viz-table">
+          <view class="tr th"><view class="td td-name"><text>餐厅 / 生活区</text></view><view class="td td-grow"><text>当前泔水重量</text></view><view class="td"><text>装满桶数</text></view><view class="td"><text>状态</text></view><view class="td td-act"></view></view>
+          <block wx:for="{{rows}}" wx:key="id">
+            <view class="tr {{detailId === item.id ? 'chosen' : ''}}">
+              <view class="td td-name"><b>{{item.name}}</b><text class="sub">{{item.area}}</text></view>
+              <view class="td td-grow"><view class="td-num"><b>{{item.current}}kg</b></view><view class="bar-track mini"><i style="width:{{item.fillBar}}%; background:#4a86c8;" /></view></view>
+              <text class="td"><text class="tnum">{{item.fullBins}}</text> 桶</text>
+              <text class="td"><text class="status-chip {{item.nearFull ? 'warn' : ''}}">{{item.nearFull ? '装载较高' : '继续观察'}}</text></text>
+              <view class="td td-act"><button class="outline-button small" catchtap="toggleDetail" data-id="{{item.id}}">{{detailId === item.id ? '收起详情' : '查看详情'}}</button></view>
+            </view>
+            <view class="detail-expand" wx:if="{{detailId === item.id}}">
+              <view class="detail-title">{{item.fullBins}} 个整桶 + 当前桶 {{item.percent}}%</view>
+              <view class="detail-metrics"><view>当前重量 <b>{{item.current}}kg</b></view><view>单桶容量 <b>{{item.capacity}}kg</b></view></view>
+              <view class="detail-sub">学生可执行策略</view>
+              <view class="action-list">
+                <view class="action-item" wx:for="{{actions}}" wx:for-item="act" wx:key="label">
+                  <b>{{act.label}}</b><em>{{act.rate}}</em>
+                  <text class="act-detail">{{act.detail}}</text>
+                </view>
+              </view>
+              <view class="small-note">策略减损率用于演示“个人选择放进校园会发生什么”，不用于给餐厅排名。</view>
+            </view>
+          </block>
+        </view>
+        <view class="small-note">重量由演示时间推算；桶容量、密度和清运状态用于演示，不构成餐厅排名。</view>
+      </view>
+
+      <view class="panel table-panel sketch-in">
+        <view class="panel-heading"><view><view class="kicker">时段拆解 · 初始日样本</view><view class="panel-h2">哪一餐把重量带上来？</view></view></view>
+        <view class="viz-table">
+          <view class="tr th"><view class="td td-name"><text>餐厅</text></view><view class="td td-grow"><text>早餐</text></view><view class="td td-grow"><text>午餐</text></view><view class="td td-grow"><text>晚餐</text></view><view class="td"><text>午餐占比</text></view></view>
+          <view class="tr" wx:for="{{mealTable}}" wx:key="id">
+            <view class="td td-name"><b>{{item.name}}</b><text class="sub">{{item.area}}</text></view>
+            <view class="td td-grow" wx:for="{{item.cells}}" wx:for-item="cell" wx:key="meal">
+              <view class="td-num"><b>{{cell.kg}}kg</b></view>
+              <view class="bar-track mini"><i style="width:{{cell.bar}}%; background:{{cell.meal === '午餐' ? '#e0763c' : '#8fbdec'}};" /></view>
+            </view>
+            <text class="td"><text class="ratio-value">{{item.lunchShare}}</text></text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部行动提示 -->
+    <view class="result-band sketch-in">
+      <view>
+        <view class="band-h2">午餐时段装载较高，值得进一步观察</view>
+        <text class="muted">本周记录累计约 {{totalWaste}}kg。与其只提醒“不要浪费”，不如先改变点餐分量和离席前的最后一步。</text>
+      </view>
+      <button class="primary-button" bindtap="goLab">去试策略 →</button>
+    </view>
+  </view>
+
+  <!-- 放大浮层 -->
+  <view wx:if="{{zoom}}" class="panel-zoom" bindtap="closeZoom" catchtouchmove="noop">
+    <view class="zoom-close" catchtap="closeZoom">×</view>
+    <scroll-view class="zoom-shell panel" scroll-y catchtap="noop">
+      <view class="viz-heading">
+        <view>
+          <view class="kicker">{{zoomKicker}}</view>
+          <view class="zoom-title">{{zoomTitle}}</view>
+          <view class="viz-sub" wx:if="{{zoomSub}}">{{zoomSub}}</view>
+        </view>
+      </view>
+      <block wx:if="{{zoom === 'viz-ring'}}">
+        <view class="ring-body big">
+          <view class="ring-breakdown big">
+            <view class="ring-disc big-disc" style="{{ringStyle}}">
+              <view class="ring-hole big-hole"><b>{{ringCenter}}</b><text class="hole-cap">kg · 样本合计</text></view>
+            </view>
+          </view>
+          <view class="ring-legend">
+            <view class="ring-legend-item" wx:for="{{ringLegend}}" wx:key="label">
+              <i class="lg-dot" style="background:{{item.color}};" />
+              <text class="rl-label">{{item.label}}<text class="rl-pct">{{item.pct}}</text></text>
+              <text class="rl-kg">{{item.kg}} kg</text>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:elif="{{zoom === 'viz-fill'}}">
+        <view class="ring-body big">
+          <view class="ring-breakdown big">
+            <view class="ring-disc big-disc" style="{{fillRingStyle}}">
+              <view class="ring-hole big-hole"><b>{{fillTotal}}</b><text class="hole-cap">kg · 当前合计</text></view>
+            </view>
+          </view>
+          <view class="ring-legend">
+            <view class="ring-legend-item" wx:for="{{fillLegend}}" wx:key="label">
+              <i class="lg-dot" style="background:{{item.color}};" />
+              <text class="rl-label">{{item.label}}<text class="rl-pct">{{item.pct}}</text></text>
+              <text class="rl-kg">{{item.kg}} kg</text>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:elif="{{zoom === 'viz-meal'}}">
+        <template is="tpl-bars" data="{{...barsViewBig}}" />
+      </block>
+      <block wx:else>
+        <template is="tpl-scatter" data="{{...scatterViewBig}}" />
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 图表模板：面板内与放大浮层共用同一套结构 -->
+  <template name="tpl-bars">
+    <view class="bar-chart {{big ? 'big' : ''}}">
+      <text class="bar-cap">kg</text>
+      <view class="bar-plot">
+        <view class="bar-line" wx:for="{{ticks}}" wx:key="label" style="bottom:{{item.pos}}%;"><text class="bar-tick">{{item.label}}</text></view>
+        <view class="bar-cols">
+          <view class="bar-col" wx:for="{{bars}}" wx:key="name">
+            <view class="bar-stack">
+              <view class="bar-seg" wx:for="{{item.segs}}" wx:for-item="seg" wx:key="meal" style="height:{{seg.h}}%; background:{{seg.color}};" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="bar-names"><text class="bar-name" wx:for="{{bars}}" wx:key="name">{{item.name}}</text></view>
+    </view>
+  </template>
+
+  <template name="tpl-scatter">
+    <view class="scatter {{big ? 'big' : ''}}">
+      <text class="sc-cap">分量 g/10</text>
+      <view class="sc-plot">
+        <view class="sc-line" wx:for="{{ticks}}" wx:key="label" style="bottom:{{item.pos}}%;"><text class="sc-tick">{{item.label}}</text></view>
+        <view class="sc-dot" wx:for="{{dots}}" wx:key="key" style="left:{{item.left}}%; bottom:{{item.bottom}}%;" />
+      </view>
+      <view class="sc-foot">
+        <text class="sc-cap-x">价格 ￥</text>
+        <view class="sc-x-row"><text class="sc-x" wx:for="{{xTicks}}" wx:key="label">{{item.label}}</text></view>
+      </view>
+    </view>
+  </template>
+</view>

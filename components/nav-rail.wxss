@@ -1,0 +1,267 @@
+/* 导航栏：手机竖屏（默认）= 底部 5 项 tab 条；宽屏 / 横屏（≥731px）= 左侧 5 项竖排导航栏。
+   两种形态共用同一套 DOM，仅靠媒体查询切换。「数据与方法」已从导航移除。 */
+
+/* ---------- 手机竖屏：底部导航条 ---------- */
+.rail {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: #fffdf8;
+  border-top: 2px solid #35506b;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -4px 0 -2px rgba(60, 85, 112, 0.12);
+  padding: 4px 4px calc(4px + var(--safe-bottom, 0px));
+  box-sizing: border-box;
+  z-index: 50;
+}
+.rail-brand {
+  display: none;
+}
+/* 竖屏底栏：不加滚动，横向排布 */
+.rail-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.rail-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.rail-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+.rail-brand-text b {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: #2f4256;
+  line-height: 1.15;
+}
+.rail-brand-text small {
+  display: block;
+  font-size: 9.5px;
+  color: #7d8f9e;
+  transform: scale(0.92);
+  transform-origin: left;
+  white-space: nowrap;
+}
+.rail-items {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 0;
+  gap: 0;
+  margin-top: 0;
+}
+.rail-item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 5px 0 6px;
+  border-radius: 10px 6px 9px 7px / 7px 9px 6px 10px;
+  border: 2px solid transparent;
+  color: #5b7186;
+  box-sizing: border-box;
+}
+.rail-item.on {
+  background: #fdf1e8;
+  border-color: #e0763c;
+  color: #c26130;
+  font-weight: 800;
+  box-shadow: 0 3px 0 -1px rgba(60, 85, 112, 0.18);
+}
+.rail-icon {
+  font-size: 18px;
+  line-height: 1.1;
+}
+.rail-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+/* 「数据与方法」已移除：底栏没有脚注 */
+.rail-foot {
+  display: none;
+}
+
+/* ---------- 宽屏 / 横屏（≥731px）：左侧竖排导航栏 ---------- */
+@media (min-width: 731px) {
+  .rail {
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: calc(150px + var(--safe-left, 0px));
+    flex-direction: column;
+    align-items: stretch;
+    border-top: none;
+    border-right: 2px solid #35506b;
+    border-radius: 0 14px 14px 0;
+    box-shadow: 4px 0 0 -2px rgba(60, 85, 112, 0.1);
+    padding: 12px 10px 10px;
+    /* 横屏刘海/灵动岛在左侧：导航栏整体加宽并让内容右移，避免压住图标与文字 */
+    padding-left: calc(10px + var(--safe-left, 0px));
+  }
+  .rail-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 4px 10px;
+    border-bottom: 2px dashed #d5e2ee;
+  }
+  /* 侧栏：内容超出高度时可上下滑动（scroll-view），条目不被压缩 */
+  .rail-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .rail-row {
+    flex-direction: column;
+    width: 100%;
+  }
+  .rail-items {
+    flex: 1 0 auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .rail-item {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 11px 10px;
+  }
+  .rail-icon {
+    font-size: 16px;
+    width: 20px;
+    flex: none;
+    text-align: center;
+  }
+  .rail-label {
+    font-size: 14px;
+  }
+  .rail-foot {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    border-top: 2px dashed #d5e2ee;
+    padding-top: 8px;
+  }
+  .rail-note {
+    display: block;
+    font-size: 8.5px;
+    color: #9aabbb;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: 6px;
+  }
+}
+
+/* 短屏横屏（高度 <= 480px）：保持 5 项一屏可见，字号随屏幕适中放大 */
+@media (min-width: 731px) and (max-height: 480px) {
+  .rail {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .rail-brand {
+    padding: 0 2px 6px;
+  }
+  .rail-mark {
+    width: 24px;
+    height: 24px;
+  }
+  .rail-brand-text b {
+    font-size: 13px;
+  }
+  .rail-brand-text small {
+    font-size: 8px;
+    transform: none;
+  }
+  .rail-items {
+    margin-top: 6px;
+    gap: 3px;
+  }
+  .rail-item {
+    padding: 10px 9px;
+    gap: 8px;
+  }
+  .rail-icon {
+    font-size: 16px;
+    width: 20px;
+    flex: none;
+    text-align: center;
+  }
+  .rail-label {
+    font-size: 14px;
+  }
+  .rail-foot {
+    padding-top: 6px;
+  }
+  .rail-note {
+    font-size: 8px;
+    margin-top: 3px;
+  }
+}
+
+/* 更宽的手机/平板横屏：再放大一档 */
+@media (min-width: 820px) and (max-height: 480px) {
+  .rail-item {
+    padding: 12px 10px;
+  }
+  .rail-icon {
+    font-size: 17px;
+  }
+  .rail-label {
+    font-size: 15px;
+  }
+}
+
+/* 背景音乐开关（悬浮按钮，所有页面可见） */
+.music-fab {
+  position: fixed;
+  right: 14px;
+  bottom: calc(74px + var(--safe-bottom, 0px));
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  box-shadow: 0 3px 0 -1px rgba(60, 85, 112, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  color: #7d8f9e;
+}
+.music-fab.on {
+  background: #e0763c;
+  color: #fff;
+}
+.music-note {
+  font-size: 19px;
+  line-height: 1;
+}
+@media (min-width: 731px) {
+  .music-fab {
+    right: 16px;
+    bottom: 16px;
+    width: 36px;
+    height: 36px;
+  }
+  .music-note {
+    font-size: 17px;
+  }
+}

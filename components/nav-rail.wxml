@@ -1,0 +1,31 @@
+<view class="rail" style="--safe-left:{{safeLeft}}px;--safe-right:{{safeRight}}px;--safe-bottom:{{safeBottom}}px;">
+  <view class="rail-brand" bindtap="go" data-id="home">
+    <image class="rail-mark" src="/images/brand-mark.png" mode="aspectFit" />
+    <view class="rail-brand-text">
+      <b>一餐之后</b>
+      <small>校园减损行动实验室</small>
+    </view>
+  </view>
+  <scroll-view class="rail-scroll" scroll-x scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="rail-row">
+      <view class="rail-items">
+        <view
+          wx:for="{{items}}"
+          wx:key="id"
+          class="rail-item {{active === item.id ? 'on' : ''}}"
+          bindtap="go"
+          data-id="{{item.id}}"
+        >
+          <text class="rail-icon">{{item.icon}}</text>
+          <text class="rail-label">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="rail-foot">
+        <view class="rail-note">一餐之后 · AFTER A MEAL</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 背景音乐开关：所有页面共用（音频实例由 app.js 持有，跨页面连续播放） -->
+<view class="music-fab {{musicOn ? 'on' : ''}}" catchtap="toggleMusic"><text class="music-note">♪</text></view>

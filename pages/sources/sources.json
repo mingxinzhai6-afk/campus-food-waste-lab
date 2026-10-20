@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "一餐之后 · 数据与方法",
+  "usingComponents": {
+    "nav-rail": "/components/nav-rail"
+  }
+}

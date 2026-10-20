@@ -1,0 +1,455 @@
+.lab-h1 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 2px 0 4px;
+}
+.lab-h1 .em {
+  color: #e0763c;
+}
+
+/* 策略插画 2×2 */
+.art-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.art-cell {
+  border: 2.5px solid #d5e2ee;
+  border-radius: var(--r-mid);
+  overflow: hidden;
+  background: #fffdf8;
+  position: relative;
+}
+.art-cell.on {
+  border-color: #58a87a;
+  box-shadow: 0 4px 0 -1px rgba(88, 168, 122, 0.35);
+}
+.art-visual {
+  position: relative;
+  height: 92px;
+}
+.art-photo {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s, filter 0.2s;
+}
+.art-photo.dim {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+.art-badge {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  background: rgba(255, 253, 248, 0.95);
+  border: 1.5px solid #35506b;
+  border-radius: 8px 4px 7px 5px / 5px 7px 4px 8px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #c26130;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.art-badge text {
+  color: #58a87a;
+  font-size: 12px;
+}
+.art-caption {
+  font-size: 10.5px;
+  padding: 5px 8px;
+  color: #5b7186;
+  font-weight: 600;
+}
+.art-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.art-foot .muted {
+  font-size: 10.5px;
+}
+
+/* 自定义行动 */
+.custom-plan {
+  margin-top: 12px;
+  border-top: 2px dashed #d5e2ee;
+  padding-top: 10px;
+}
+.custom-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.custom-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f6f9fc;
+  border: 1.5px solid #d5e2ee;
+  border-radius: var(--r-mid);
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.custom-item em {
+  font-style: normal;
+  color: #58a87a;
+  font-weight: 800;
+}
+.custom-remove {
+  margin-left: auto;
+  color: #9aabbb;
+  font-size: 16px;
+  padding: 0 4px;
+}
+.custom-name {
+  background: #fffdf8;
+  border: 2px solid #b9cbdc;
+  border-radius: var(--r-btn);
+  padding: 7px 10px;
+  font-size: 12.5px;
+  margin-bottom: 8px;
+}
+.custom-rate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.custom-rate b {
+  color: #58a87a;
+  font-weight: 800;
+  flex: none;
+}
+.rate-slider {
+  flex: 1;
+  margin: 0;
+}
+.primary-button.small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.custom-add {
+  display: inline-flex;
+  border-style: dashed;
+  color: #c26130;
+  font-weight: 700;
+  cursor: pointer;
+}
+.custom-hint {
+  font-size: 10.5px;
+  margin-left: 8px;
+}
+
+/* 结果区 */
+.lab-result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* 左侧板块与右侧前两个板块对齐：两块一起撑满这一行，底边齐平 */
+.lab-top {
+  align-items: stretch;
+}
+.lab-top .lab-result > .panel {
+  flex: 1;
+}
+.lab-top .compare {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* 行动卡整行宽，放在两栏下面 */
+.plan-card {
+  margin-top: 12px;
+}
+.result-top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+/* 上排：减少量 + 环形；下排：现在 / 尝试后 两行注记 */
+.result-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.result-figure {
+  flex: 1;
+  min-width: 0;
+}
+.rf-cap {
+  font-size: 11px;
+  color: #7d8f9e;
+}
+.rf-num b {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2f4256;
+}
+.rf-num text {
+  font-size: 12px;
+  color: #7d8f9e;
+}
+.result-ring {
+  width: 88px;
+  height: 88px;
+  flex: none;
+}
+.result-hole {
+  width: 56px;
+  height: 56px;
+}
+.result-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  font-size: 10.5px;
+  color: #5b7186;
+  flex: none;
+  text-align: left;
+}
+.result-notes text {
+  white-space: nowrap;
+}
+
+/* 对比条与桶象形 */
+.compare-row,
+.bin-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.cmp-cap {
+  width: 40px;
+  flex: none;
+  font-size: 11px;
+  color: #7d8f9e;
+  font-weight: 700;
+}
+.bar-track.grow {
+  flex: 1;
+}
+.cmp-val {
+  flex: none;
+  font-size: 11px;
+  color: #5b7186;
+  font-weight: 600;
+  width: 108px;
+  text-align: right;
+}
+.bin-glyphs {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+.bin-glyph {
+  width: 16px;
+  height: 26px;
+  border: 2px solid #b98a63;
+  border-top-width: 4px;
+  border-radius: 3px 3px 6px 6px;
+  background: #fffdf8;
+  position: relative;
+  overflow: hidden;
+}
+.bin-glyph i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  background: #e2b077;
+}
+
+/* 行动卡 */
+.plan-card {
+  background: linear-gradient(135deg, #f2fbf6, #eaf6ef);
+  border: 2px solid #35506b;
+  border-radius: var(--r-card);
+  box-shadow: 0 5px 0 -1px rgba(60, 85, 112, 0.14);
+  display: flex;
+  overflow: hidden;
+}
+.plan-main {
+  flex: 1;
+  padding: 14px 16px;
+}
+.plan-kicker {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #58a87a;
+}
+.plan-title {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 3px 0 4px;
+}
+.plan-lead {
+  font-size: 11px;
+  color: #5b7186;
+  display: block;
+}
+.plan-stat {
+  font-size: 13px;
+  margin-top: 8px;
+}
+.plan-stat b {
+  color: #c26130;
+  font-size: 16px;
+  font-weight: 800;
+}
+.plan-sub {
+  font-size: 11px;
+  color: #5b7186;
+  display: block;
+  margin-top: 2px;
+}
+.plan-try {
+  margin-top: 8px;
+}
+.plan-try > b {
+  font-size: 12px;
+}
+.plan-item {
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+  color: #47604f;
+  margin-top: 3px;
+  align-items: baseline;
+}
+.tick {
+  color: #58a87a;
+  font-weight: 800;
+  flex: none;
+}
+.pi-text {
+  line-height: 1.45;
+}
+/* 由当前计划生成的鼓励语，与保存的卡片同文 */
+.plan-encourage {
+  margin-top: 10px;
+  padding: 7px 10px 8px;
+  background: rgba(255, 253, 248, 0.8);
+  border-left: 3px solid #58a87a;
+  border-radius: 2px 9px 8px 3px / 3px 8px 9px 2px;
+}
+.pe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.pe-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #58a87a;
+}
+.pe-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #35506b;
+}
+.pe-refresh {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #58a87a;
+  padding: 3px 8px;
+  border: 1.5px solid #b9d8c6;
+  border-radius: 999px;
+  background: #fffdf8;
+}
+.plan-empty {
+  display: block;
+  font-size: 11.5px;
+  color: #9aabbb;
+  margin-top: 8px;
+}
+.plan-sign {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 11px;
+  color: #7d8f9e;
+}
+.sign-label {
+  flex: none;
+}
+.sign-input {
+  flex: 1;
+  min-width: 0;
+  max-width: 220px;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 4px;
+  font-size: 12px;
+  color: #2f4256;
+  border-bottom: 1.5px solid #9aabbb;
+}
+.sign-placeholder {
+  font-size: 11px;
+  color: #b5c1cc;
+}
+.plan-art {
+  width: 48%;
+  flex: none;
+  border-left: 2px dashed #b9d8c6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.plan-art-img {
+  width: 100%;
+  height: 100%;
+}
+.plan-art-empty {
+  font-size: 11px;
+  color: #9aabbb;
+  text-align: center;
+  white-space: pre-line;
+  padding: 10px;
+}
+.lab-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 11px;
+}
+.offscreen-canvas {
+  position: fixed;
+  left: -2000px;
+  top: 0;
+  width: 560px;
+  height: 360px;
+}
+.band-h2 {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+/* 保存行动卡按钮：挪到"变成一周的习惯"大框上方，右对齐 */
+.export-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}

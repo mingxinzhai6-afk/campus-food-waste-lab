@@ -1,0 +1,133 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="checkin" />
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">05 / 每天一拍</view>
+        <view class="ck-h1">每天一张照片，<text class="em">把节约变成习惯。</text></view>
+        <view class="muted">拍下今天的光盘或餐桌，完成一次打卡，收获一句属于今天的话。</view>
+      </view>
+    </view>
+
+    <view class="two-col">
+      <!-- 左：今日打卡 -->
+      <view class="panel sketch-in">
+        <view class="panel-heading">
+          <view>
+            <view class="kicker">今日打卡</view>
+            <view class="panel-h2">{{today}}</view>
+          </view>
+        </view>
+
+        <!-- 已打卡 -->
+        <block wx:if="{{todayRecord}}">
+          <view class="done-wrap">
+            <image class="done-photo" src="{{todayRecord.photo}}" mode="aspectFill" bindtap="previewImage" data-url="{{todayRecord.photo}}" />
+            <view class="done-caption">{{todayRecord.date}} · {{todayRecord.time}} 已打卡</view>
+          </view>
+          <view class="quote-card">
+            <b class="quote-title">✦ 今日鼓励语</b>
+            <text class="quote-text">{{todayRecord.quote}}</text>
+            <text class="quote-note">今天已经打卡啦，明天再来拍一张吧。</text>
+            <text class="vision-line" wx:if="{{todayRecord.wasteRate !== undefined}}">{{todayRecord.wasteRate <= 0.03 ? '今天识别到的是光盘：这一餐没有食物被丢掉。' : '今天识别到剩约 ' + todayRecord.pct + '%。'}}</text>
+          </view>
+        </block>
+
+        <!-- 未打卡：邀请拍照 -->
+        <block wx:else>
+          <block wx:if="{{!preview}}">
+            <view class="camera-card">
+              <view class="camera-art">📷</view>
+              <b>今天还没打卡</b>
+              <text class="camera-sub">拍一张你的光盘、餐盘或食堂餐桌，记录这一天的节约行动。</text>
+              <view class="chip-row center">
+                <button class="primary-button" bindtap="takePhoto">📷 打开摄像头拍照</button>
+                <button class="quiet-button" bindtap="pickAlbum">从相册选择</button>
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="preview-wrap">
+              <image class="preview-photo" src="{{preview}}" mode="aspectFit" />
+              <text class="vision-status" wx:if="{{analyzing}}">正在本地识别这一餐的剩余量…</text>
+              <block wx:if="{{vision && ratio !== null}}">
+                <view class="vision-card {{isClean ? 'clean' : ''}}">
+                  <view class="vision-head">
+                    <view class="kicker">剩饭识别</view>
+                    <view class="vision-badge {{vision.confidence}}">{{visionLabel}}</view>
+                  </view>
+                  <view class="vision-figure">
+                    <b>{{ratioPercent}}<text>%</text></b>
+                    <text class="vf-cap">识别到盘面还剩这么多</text>
+                  </view>
+                  <view class="vision-suggest">
+                    <text class="suggest-title">✦ 给你的建议</text>
+                    <text class="suggest-text">{{suggestion}}</text>
+                  </view>
+                  <text class="vision-hint">识别结果不可手动调整；如果明显不对，点下方「重选一张」重拍，让餐盘占满画面。</text>
+                  <block wx:if="{{!isClean}}">
+                    <view class="vision-lead">这一餐留下了 <b>{{servingsText}} 份</b>食物的价值（口径同「我的影响」）：</view>
+                    <view class="vision-impact">
+                      <view class="impact-card {{item.tone}} mini" wx:for="{{impactCards}}" wx:key="label">
+                        <impact-art kind="{{item.art}}" size="{{32}}" />
+                        <text class="card-label">{{item.label}}</text>
+                        <view class="card-value"><b>{{item.value}}</b><text class="card-unit">{{item.unit}}</text></view>
+                      </view>
+                    </view>
+                    <text class="vision-compare">{{compareLine}}</text>
+                  </block>
+                  <text class="vision-clean" wx:else>这一餐是光盘，没有食物被丢掉。</text>
+                  <text class="vision-note">{{vision.note}}。识别在本机本地完成，不是训练出来的模型；重量按全站平均一份 0.32kg 与影响页同一套系数折算。</text>
+                </view>
+              </block>
+              <view class="chip-row center">
+                <button class="primary-button {{saving ? 'disabled' : ''}}" bindtap="saveCheckin">{{saving ? '保存中…' : '✓ 完成打卡'}}</button>
+                <button class="quiet-button" bindtap="resetPreview">重选一张</button>
+              </view>
+              <text class="privacy-tip">照片只保存在你自己的手机里，不会上传。</text>
+            </view>
+          </block>
+          <text class="ck-error" wx:if="{{error}}">{{error}}</text>
+        </block>
+      </view>
+
+      <!-- 右：统计 + 相册 -->
+      <view class="ck-right">
+        <view class="panel sketch-in">
+          <view class="ck-stats">
+            <view class="ck-stat"><b>{{streak}}<text> 天</text></b><text class="ck-cap">连续打卡</text></view>
+            <view class="ck-stat"><b>{{totalCount}}<text> 次</text></b><text class="ck-cap">累计打卡</text></view>
+            <view class="ck-stat"><b>{{monthCount}}<text> 次</text></b><text class="ck-cap">本月打卡</text></view>
+          </view>
+          <view class="strip">
+            <text class="strip-cell {{item.on ? 'on' : ''}} {{item.isToday ? 'today' : ''}}" wx:for="{{strip}}" wx:key="key">{{item.on ? '✓' : item.day}}</text>
+          </view>
+        </view>
+
+        <view class="panel sketch-in wall-panel">
+          <view class="panel-heading">
+            <view>
+              <view class="kicker">打卡相册</view>
+              <view class="panel-h2">坚持的痕迹，都留在这里</view>
+              <view class="muted">共 {{totalCount}} 天 · 存在本机，不上传任何服务器{{totalCount ? '，点照片右上角可删除重打' : ''}}。</view>
+              <view class="vision-total" wx:if="{{visionTotalLine}}">{{visionTotalLine}}</view>
+            </view>
+          </view>
+          <view class="wall" wx:if="{{records.length}}">
+            <view class="wall-cell" wx:for="{{records}}" wx:key="date">
+              <image class="wall-photo" src="{{item.photo}}" mode="aspectFill" lazy-load bindtap="previewImage" data-url="{{item.photo}}" />
+              <text class="cell-vision {{item.wasteRate !== undefined && item.wasteRate <= 0.03 ? 'clean' : ''}}" wx:if="{{item.wasteRate !== undefined}}">{{item.wasteRate <= 0.03 ? '光盘' : '剩 ' + item.pct + '%'}}</text>
+              <text class="cell-remove" catchtap="removeRecord" data-date="{{item.date}}">×</text>
+              <view class="wall-caption"><b>{{item.date}}</b><text>{{item.quote}}</text></view>
+            </view>
+          </view>
+          <text class="ck-empty" wx:else>还没有记录——今天拍下第一张，这里就会开始生长。</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="method-note"><text>i</text><text class="note-p">打卡为本地演示功能：照片压缩后保存在小程序用户目录，删除小程序后不会保留；鼓励语按日期轮换生成。剩饭识别是本地像素估算（亮度 / 饱和度 / 色温 / 表面起伏四条判据），不是训练出来的模型，结果可以手动修正。</text></view>
+    <!-- 离屏工作画布：识别缩图 + 存档压缩共用 -->
+    <canvas id="work-canvas" type="2d" class="offscreen-canvas"></canvas>
+  </view>
+</view>

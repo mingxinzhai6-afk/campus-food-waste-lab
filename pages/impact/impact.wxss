@@ -1,0 +1,260 @@
+.impact-h1 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 2px 0 4px;
+}
+.impact-h1 .em {
+  color: #e0763c;
+}
+
+/* 四张影响卡 */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media (max-width: 730px) {
+  .impact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.impact-card {
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  border-radius: var(--r-card);
+  box-shadow: 0 5px 0 -1px rgba(60, 85, 112, 0.14);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top-width: 5px;
+}
+.impact-card.green { border-top-color: #58a87a; }
+.impact-card.blue { border-top-color: #4a86c8; }
+.impact-card.orange { border-top-color: #e0763c; }
+.impact-card.ink { border-top-color: #b98a63; }
+.card-label {
+  font-size: 11px;
+  color: #7d8f9e;
+  font-weight: 700;
+}
+.card-value b {
+  font-size: 22px;
+  font-weight: 800;
+}
+.card-unit {
+  font-size: 10.5px;
+  color: #9aabbb;
+  margin-left: 3px;
+}
+
+/* 资金路径 */
+.money-lead {
+  font-size: 12px;
+  color: #5b7186;
+  margin-bottom: 10px;
+}
+.money-lead .strong {
+  color: #c26130;
+  font-weight: 800;
+}
+.money-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.money-col {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  min-width: 220px;
+}
+.money-source {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: #f4f8fc;
+  border: 2px solid #b9cbdc;
+  border-radius: var(--r-mid);
+  padding: 7px 10px;
+}
+.money-source.student { border-left: 5px solid #4a86c8; }
+.money-source.school { border-left: 5px solid #58a87a; }
+.money-source.public { border-left: 5px solid #d8b45e; }
+.money-source.unverified { border-style: dashed; background: transparent; opacity: 0.8; }
+.money-source-text b {
+  font-size: 11.5px;
+  display: block;
+}
+.money-source-text text {
+  font-size: 9.5px;
+  color: #9aabbb;
+  display: block;
+}
+.money-source-value {
+  text-align: right;
+  flex: none;
+}
+.money-source-value b {
+  font-size: 13px;
+  font-weight: 800;
+  display: block;
+}
+.money-source-value .pct {
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.money-link {
+  width: 26px;
+  border-top: 2px dashed #9db0c3;
+  flex: none;
+}
+.money-node {
+  flex: none;
+  width: 118px;
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  border-radius: var(--r-mid);
+  box-shadow: 0 4px 0 -1px rgba(60, 85, 112, 0.14);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-align: center;
+}
+.money-node.plate b,
+.money-node.bin b {
+  font-size: 13px;
+  font-weight: 800;
+}
+.node-value {
+  font-size: 10.5px;
+  color: #c26130;
+  font-weight: 700;
+}
+.node-sub {
+  font-size: 9px;
+  color: #9aabbb;
+  line-height: 1.4;
+}
+.money-arrow {
+  flex: none;
+  width: 118px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+.arrow-cap {
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.money-arrow b {
+  font-size: 14px;
+  color: #c26130;
+  font-weight: 800;
+}
+.arrow-sub {
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.dotted-arrow {
+  width: 2px;
+  height: 34px;
+  background-image: linear-gradient(180deg, #b98a63 55%, transparent 45%);
+  background-size: 2px 9px;
+  background-repeat: repeat-y;
+  position: relative;
+  margin: 4px auto 0;
+}
+.dotted-arrow::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  bottom: -7px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #b98a63;
+}
+.bin-glyph {
+  font-size: 24px;
+}
+@media (max-width: 860px) {
+  .money-flow {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .money-link {
+    display: none;
+  }
+}
+
+.explanation-band {
+  background: #f2f8f4;
+  border: 2px solid #58a87a;
+  border-radius: var(--r-card);
+  box-shadow: 0 5px 0 -1px rgba(60, 85, 112, 0.1);
+  padding: 12px 16px;
+  margin-top: 14px;
+}
+.explanation-band b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.explanation-band text {
+  font-size: 12px;
+  color: #47604f;
+  line-height: 1.6;
+}
+.band-h2 {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 2px 0 3px;
+}
+
+/* 横屏：资金来源卡靠左压窄，餐盘 →（竖箭头）→ 泔水桶 竖排在右 */
+@media (min-width: 731px) {
+  .money-flow {
+    display: grid;
+    grid-template-columns: minmax(220px, 330px) 140px;
+    grid-template-rows: auto auto auto;
+    column-gap: 14px;
+    row-gap: 4px;
+    align-items: center;
+    justify-content: start;
+  }
+  .money-col {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 100%;
+    min-width: 0;
+  }
+  .money-link {
+    display: none;
+  }
+  .money-node.plate {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+  }
+  .money-arrow {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100%;
+    padding: 4px 0;
+  }
+  .money-node.bin {
+    grid-column: 2;
+    grid-row: 3;
+    width: 100%;
+  }
+}

@@ -1,0 +1,163 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="lab" />
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">04 / 试一个改变</view>
+        <view class="lab-h1">如果从今天开始，<text class="em">换一种吃法？</text></view>
+        <view class="muted">{{cafeteria}} · 打开你愿意尝试的策略，看看它在一周校园范围内可能带来的变化。</view>
+      </view>
+    </view>
+
+    <view class="two-col lab-top">
+      <!-- 左：策略选择 -->
+      <view class="panel sketch-in">
+        <view class="panel-heading">
+          <view>
+            <view class="kicker">策略组合</view>
+            <view class="panel-h2">选择你愿意先做的一件事</view>
+          </view>
+          <view class="step">可多选</view>
+        </view>
+
+        <view class="art-grid {{hasFocus ? 'has-focus' : ''}}">
+          <view class="art-cell {{selectedMap[item.id] ? 'on' : ''}}" wx:for="{{artList}}" wx:key="id" bindtap="toggleStrategy" data-id="{{item.id}}">
+            <view class="art-visual">
+              <image class="art-photo {{hasFocus && !selectedMap[item.id] ? 'dim' : ''}}" src="{{item.src}}" mode="aspectFill" />
+              <view class="art-badge"><b>-{{item.rate}}%</b><text>{{selectedMap[item.id] ? '✓' : ''}}</text></view>
+            </view>
+            <view class="art-caption">{{item.caption}}</view>
+          </view>
+        </view>
+        <view class="art-foot">
+          <text class="muted">点击插画中的任意一格，选择你愿意先做的一件事（可多选）</text>
+          <view class="chip {{noneSelected ? 'on' : ''}}" bindtap="toggleStrategy" data-id="none">暂不选择</view>
+        </view>
+
+        <!-- 自定义行动 -->
+        <view class="custom-plan">
+          <view class="custom-list" wx:if="{{customList.length}}">
+            <view class="custom-item" wx:for="{{customList}}" wx:key="id">
+              <b>{{item.label}}</b><em>{{item.rate}}</em>
+              <text class="custom-remove" bindtap="removeCustom" data-id="{{item.id}}">×</text>
+            </view>
+          </view>
+          <block wx:if="{{adding}}">
+            <input class="custom-name" value="{{draftName}}" maxlength="14" placeholder="例如：自带饭盒 / 按需打饭 / 和同学分着吃" bindinput="onDraftName" />
+            <view class="custom-rate">预估减损 <b>{{draftRate}}%</b><slider class="rate-slider" min="2" max="40" step="1" value="{{draftRate}}" activeColor="#58a87a" block-size="18" bindchanging="onDraftRate" bindchange="onDraftRate" /></view>
+            <view class="chip-row">
+              <button class="primary-button small {{draftName ? '' : 'disabled'}}" bindtap="addCustom">加入策略组合</button>
+              <button class="quiet-button" bindtap="cancelAdding">取消</button>
+            </view>
+            <view class="small-note">自定义行动的减损率由你自己估，和四个预设一样按比例计入右边的减损与桶数。</view>
+          </block>
+          <block wx:else>
+            <view class="chip custom-add" bindtap="startAdding">＋ 自定义行动</view>
+            <text class="muted custom-hint">四个预设不够用？写一条你自己的，比如“自带饭盒”。</text>
+          </block>
+        </view>
+      </view>
+
+      <!-- 右：结果 -->
+      <view class="lab-result">
+        <view class="panel result-top sketch-in">
+          <view class="result-main">
+            <view class="result-figure">
+              <text class="rf-cap">一周预计减少</text>
+              <view class="rf-num"><b>{{saved}}</b><text> kg</text></view>
+            </view>
+            <view class="ring result-ring" style="{{ringStyle}}">
+              <view class="ring-hole result-hole"><b>{{reduction}}%</b><text class="hole-cap">减损</text></view>
+            </view>
+          </view>
+          <view class="result-notes">
+            <text>现在 {{totalWaste}}kg / {{totalBins}} 桶</text>
+            <text>尝试后 {{afterWaste}}kg / {{afterBins}} 桶</text>
+          </view>
+        </view>
+
+        <view class="panel compare sketch-in">
+          <view class="compare-row">
+            <text class="cmp-cap">现在</text>
+            <view class="bar-track grow"><i style="width:100%; background:#4a86c8;" /></view>
+            <text class="cmp-val">{{beforeCompare}}</text>
+          </view>
+          <view class="compare-row">
+            <text class="cmp-cap">尝试后</text>
+            <view class="bar-track grow"><i class="after" style="width:{{afterBar}};" /></view>
+            <text class="cmp-val">{{afterCompare}}</text>
+          </view>
+          <view class="bin-row">
+            <text class="cmp-cap">现在</text>
+            <view class="bin-glyphs"><view class="bin-glyph" wx:for="{{beforeGlyphs}}" wx:key="index"><i style="height:{{item.fill}};" /></view></view>
+            <text class="cmp-val">{{totalBins}} 桶</text>
+          </view>
+          <view class="bin-row">
+            <text class="cmp-cap">尝试后</text>
+            <view class="bin-glyphs green"><view class="bin-glyph" wx:for="{{afterGlyphs}}" wx:key="index"><i style="height:{{item.fill}};" /></view></view>
+            <text class="cmp-val">{{afterBins}} 桶</text>
+          </view>
+          <view class="small-note">按每桶 {{binCapacity}}kg 折算的象形图：一格一桶，桶内为按比例推算的液面。</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 行动卡：整行宽，放在两栏下面 -->
+    <view class="plan-card sketch-in {{planItems.length ? 'has-plan' : ''}}">
+      <view class="plan-main">
+        <view class="plan-kicker">我的校园减损计划</view>
+        <view class="plan-title">{{planTitle}}</view>
+        <text class="plan-lead">把一餐的觉察变成一个可以重复的动作。下次点餐时，先问自己：我需要这么多吗？</text>
+        <block wx:if="{{planItems.length}}">
+          <view class="plan-stat">一周预计减少 <b>{{planStat}}kg</b> 的食物浪费！</view>
+          <text class="plan-sub">{{planSub}}</text>
+          <view class="plan-try">
+            <b>我愿意尝试：</b>
+            <view class="plan-item" wx:for="{{planItems}}" wx:key="label"><text class="tick">✓</text><text class="pi-text">{{item.label}}：{{item.detail}}</text></view>
+          </view>
+          <view class="plan-encourage">
+            <view class="pe-head">
+              <text class="pe-label">鼓励话语</text>
+              <text class="pe-refresh" bindtap="refreshEncourage">换一句 ↻</text>
+            </view>
+            <text class="pe-text">“{{encourage}}”</text>
+          </view>
+        </block>
+        <text class="plan-empty" wx:else>点左侧插画里的任意一格，这里就会生成属于你的行动计划。</text>
+        <view class="plan-sign">
+          <text class="sign-label">行动人：</text>
+          <input
+            class="sign-input"
+            value="{{signerName}}"
+            maxlength="12"
+            placeholder="写下你的名字"
+            placeholder-class="sign-placeholder"
+            bindinput="onSignerName"
+          />
+        </view>
+      </view>
+      <view class="plan-art">
+        <image wx:if="{{planHasArt}}" class="plan-art-img" src="{{planArtSrc}}" mode="aspectFill" />
+        <text wx:else class="plan-art-empty">{{planItems.length ? '自定义行动\n按你的方式开始' : '四种行动\n选一个开始'}}</text>
+      </view>
+    </view>
+
+    <view class="export-row sketch-in">
+      <button class="primary-button" bindtap="exportCard">{{exporting ? '正在生成…' : '保存行动卡图片'}}</button>
+    </view>
+
+    <view class="result-band sketch-in">
+      <view>
+        <view class="band-h2">把今天选的这一件事，变成一周的习惯</view>
+        <text class="muted">每日打卡把这一餐记下来：拍一张照片，看看自己能坚持几天。</text>
+      </view>
+      <button class="primary-button" bindtap="goCheckin">去每日打卡 →</button>
+    </view>
+    <view class="lab-footer">
+      <text class="muted">减损效果为估算值，实际结果取决于你的执行情况。</text>
+    </view>
+
+    <!-- 导出用离屏画布 -->
+    <canvas id="plan-canvas" type="2d" class="offscreen-canvas"></canvas>
+  </view>
+</view>

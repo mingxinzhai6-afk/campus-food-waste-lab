@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/impact/impact",
+    "pages/campus/campus",
+    "pages/lab/lab",
+    "pages/checkin/checkin",
+    "pages/sources/sources"
+  ],
+  "window": {
+    "pageOrientation": "landscape",
+    "navigationBarBackgroundColor": "#d9e9f6",
+    "navigationBarTitleText": "一餐之后",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#dcebf7",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "一餐之后 · 每日打卡",
+  "usingComponents": {
+    "nav-rail": "/components/nav-rail",
+    "impact-art": "/components/impact-art"
+  }
+}

@@ -1,0 +1,703 @@
+.campus-h1 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 2px 0 4px;
+}
+.campus-h1 .em {
+  color: #e0763c;
+}
+.data-pill {
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  border-radius: var(--r-mid);
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #2f4256;
+  text-align: right;
+}
+.data-pill text {
+  display: block;
+  font-size: 10px;
+  color: #7d8f9e;
+  font-weight: 400;
+}
+
+/* 演示时间控制条 */
+.sim-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.sim-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* 演示时间：滚轮窄一点，整体不占多余宽度 */
+.sim-clock {
+  flex: none;
+}
+.sim-wheels {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sim-picker {
+  width: 112px;
+  height: 72px;
+  background: #f6f9fc;
+  border: 2px solid #b9cbdc;
+  border-radius: var(--r-mid);
+}
+.sim-cell {
+  line-height: 24px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f4256;
+}
+.sim-now {
+  font-size: 22px;
+  font-weight: 800;
+  color: #c26130;
+  flex: none;
+}
+.sim-play {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.sim-flag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7d8f9e;
+  background: #eef3f8;
+  border: 1.5px dashed #b9cbdc;
+  border-radius: var(--r-btn);
+  padding: 5px 10px;
+  display: inline-flex;
+  align-items: center;
+}
+.sim-flag.live {
+  color: #58a87a;
+  border-color: #58a87a;
+  background: #f0f8f3;
+}
+.sim-hint {
+  font-size: 10.5px;
+  color: #9aabbb;
+  flex-basis: 100%;
+}
+
+/* 三食堂状态卡 */
+.rows-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 730px) {
+  .rows-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.row-card {
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  border-radius: var(--r-card);
+  box-shadow: 0 4px 0 -1px rgba(60, 85, 112, 0.12);
+  padding: 10px 14px;
+}
+.row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+.row-head b {
+  font-size: 14px;
+  font-weight: 800;
+}
+.row-area {
+  font-size: 10px;
+  color: #9aabbb;
+}
+.row-num {
+  margin-bottom: 5px;
+}
+.row-num b {
+  font-size: 20px;
+  font-weight: 800;
+  color: #c26130;
+}
+.row-num text {
+  font-size: 10px;
+  color: #7d8f9e;
+  margin-left: 4px;
+}
+.row-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+.row-meta > text:first-child {
+  font-size: 10.5px;
+  color: #5b7186;
+}
+.status-chip {
+  font-size: 10px;
+  font-weight: 700;
+  color: #47608a;
+  background: #edf3fa;
+  border: 1.5px solid #b9cbdc;
+  border-radius: var(--r-btn);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.status-chip.warn {
+  color: #b3541e;
+  background: #fdf1e8;
+  border-color: #e0a37c;
+}
+
+/* 图表面板 */
+.viz-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 730px) {
+  .viz-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.viz-panel {
+  position: relative;
+  min-height: 190px;
+}
+.viz-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.viz-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+.viz-sub {
+  font-size: 10px;
+  color: #9aabbb;
+}
+.zoom-hint {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 10px;
+  color: #9aabbb;
+  opacity: 0;
+  background: #eef3f8;
+  border: 1.5px solid #b9cbdc;
+  border-radius: var(--r-btn);
+  padding: 2px 8px;
+  transition: opacity 0.2s;
+}
+.viz-panel:hover .zoom-hint {
+  opacity: 1;
+}
+/* ---- 堆叠柱状图（CSS 绘制） ---- */
+.bar-chart {
+  position: relative;
+  margin-top: 30px;
+}
+.bar-cap {
+  position: absolute;
+  left: 0;
+  top: -24px;
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.bar-plot {
+  position: relative;
+  height: 150px;
+  margin-left: 30px;
+  border-bottom: 2px solid #c9d9e9;
+}
+.bar-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1.2px dashed #e2ebf4;
+}
+.bar-tick {
+  position: absolute;
+  right: 100%;
+  margin-right: 5px;
+  top: -6px;
+  font-size: 9.5px;
+  color: #7d8f9e;
+}
+.bar-cols {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+}
+.bar-col {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.bar-stack {
+  width: 100%;
+  max-width: 34px;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.bar-seg {
+  width: 100%;
+  border: 1.5px solid #fffdf8;
+  box-sizing: border-box;
+}
+.bar-seg:last-child {
+  border-radius: 7px 7px 0 0;
+}
+.bar-names {
+  display: flex;
+  margin-left: 30px;
+}
+.bar-name {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: #7d8f9e;
+  margin-top: 4px;
+}
+/* ---- 散点图（CSS 绘制） ---- */
+.scatter {
+  position: relative;
+  margin-top: 30px;
+}
+.sc-cap {
+  position: absolute;
+  left: 0;
+  top: -25px;
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.sc-plot {
+  position: relative;
+  height: 150px;
+  margin-left: 30px;
+  border-bottom: 2px solid #c9d9e9;
+}
+.sc-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1.2px dashed #e2ebf4;
+}
+.sc-tick {
+  position: absolute;
+  right: 100%;
+  margin-right: 5px;
+  top: -6px;
+  font-size: 9.5px;
+  color: #7d8f9e;
+}
+.sc-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: 0 0 -4.5px -4.5px;
+  border-radius: 50%;
+  background: #4a86c8;
+  border: 2px solid #fffdf8;
+  box-sizing: border-box;
+}
+.sc-foot {
+  position: relative;
+  margin-left: 30px;
+  margin-top: 4px;
+}
+.sc-cap-x {
+  display: block;
+  text-align: right;
+  font-size: 9.5px;
+  color: #9aabbb;
+  margin-top: 1px;
+}
+.sc-x-row {
+  display: flex;
+  justify-content: space-between;
+}
+.sc-x {
+  font-size: 9.5px;
+  color: #7d8f9e;
+}
+/* 放大浮层里的图表更高 */
+.bar-chart.big .bar-plot {
+  height: 160px;
+}
+.scatter.big .sc-plot {
+  height: 160px;
+}
+.chart-legend {
+  display: flex;
+  gap: 8px;
+  font-size: 10.5px;
+  color: #5b7186;
+  margin-left: auto;
+}
+.chart-legend .lg-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.chart-legend .lg-item text {
+  font-size: 10.5px;
+}
+.lg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* 类别构成（CSS 环） */
+.ring-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+/* 窄面板（装载结构）：环在上、图例在下，避免图例被挤到换行 */
+.ring-body.stack {
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.ring-body.stack .ring-legend {
+  width: 100%;
+}
+.ring-body.stack .ring-disc {
+  width: 118px;
+  height: 118px;
+}
+.ring-body.stack .ring-hole {
+  width: 62%;
+  height: 62%;
+}
+.ring-disc {
+  width: 132px;
+  height: 132px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid #35506b;
+  position: relative;
+}
+.ring-disc .ring-hole {
+  width: 60%;
+  height: 60%;
+}
+.ring-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ring-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.rl-label {
+  flex: 1;
+  font-weight: 600;
+}
+.rl-pct {
+  color: #9aabbb;
+  margin-left: 5px;
+  font-size: 10px;
+}
+.rl-kg {
+  color: #5b7186;
+  font-weight: 700;
+}
+
+/* 两张表：竖排、各占整行，列宽由内容自动分配 */
+.tables-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* 表格 */
+.table-panel .viz-table .tr {
+  display: flex;
+  align-items: center;
+}
+.table-panel .viz-table .tr.th {
+  color: #7d8f9e;
+  font-size: 10.5px;
+  font-weight: 700;
+  border-bottom: 2px solid #c9d9e9;
+  padding: 4px 0;
+}
+.table-panel .viz-table .tr:not(.th) {
+  border-bottom: 1.5px dashed #e2ebf4;
+  padding: 6px 0;
+}
+.table-panel .td {
+  padding: 0 6px;
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: none;
+}
+.td-num {
+  font-size: 11.5px;
+}
+.td-num b {
+  font-weight: 800;
+}
+.table-panel .td-name {
+  width: 88px;
+}
+.table-panel .td-name b {
+  font-size: 12px;
+}
+.table-panel .td .sub {
+  font-size: 9.5px;
+  color: #9aabbb;
+}
+.table-panel .td-grow {
+  flex: 1 !important;
+  min-width: 0;
+}
+.table-panel .td-act {
+  width: 86px;
+  align-items: flex-end;
+}
+.table-panel .tnum {
+  font-size: 14px;
+  font-weight: 800;
+}
+.bar-track.mini {
+  height: 6px;
+  margin-top: 3px;
+}
+.outline-button.small {
+  padding: 3px 8px;
+  font-size: 10.5px;
+}
+/* 按钮在部分渲染器里不会按内容收窄，会撑出面板；这里显式给定宽度 */
+.table-panel .td-act .outline-button {
+  width: 74px;
+  padding: 3px 0;
+}
+.tr.chosen {
+  background: #fdf1e8;
+  border-radius: 8px;
+}
+.ratio-value {
+  font-size: 13px;
+  font-weight: 800;
+  color: #c26130;
+}
+
+/* 手机竖屏：表格列距与字号整体收一档，给「当前泔水重量」列留出空间（否则数字会压到下一列） */
+@media (max-width: 730px) {
+  .table-panel .td {
+    padding: 0 4px;
+  }
+  .table-panel .td-name {
+    width: 74px;
+  }
+  .table-panel .td-name b {
+    font-size: 11.5px;
+  }
+  .table-panel .td .sub {
+    font-size: 9px;
+  }
+  .table-panel .tnum {
+    font-size: 12.5px;
+  }
+  .table-panel .td-act {
+    width: 78px;
+  }
+  .table-panel .td-act .outline-button {
+    width: 70px;
+    font-size: 10px;
+  }
+  .status-chip {
+    font-size: 9.5px;
+    padding: 1px 6px;
+  }
+  .td-num b {
+    font-size: 13px;
+  }
+}
+
+/* 详情展开 */
+.detail-expand {
+  background: #f6f9fc;
+  border: 2px dashed #b9cbdc;
+  border-radius: var(--r-mid);
+  padding: 10px 12px;
+  margin: 6px 0;
+  flex-basis: 100%;
+}
+.detail-title {
+  font-size: 13px;
+  font-weight: 800;
+}
+.detail-metrics {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: #5b7186;
+  margin: 4px 0 8px;
+}
+.detail-metrics b {
+  color: #2f4256;
+}
+.detail-sub {
+  font-size: 11px;
+  font-weight: 800;
+  color: #c26130;
+  margin-bottom: 4px;
+}
+.action-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.action-item {
+  background: #fffdf8;
+  border: 1.5px solid #d5e2ee;
+  border-radius: var(--r-mid);
+  padding: 6px 9px;
+  font-size: 11px;
+}
+.action-item b {
+  font-size: 11.5px;
+  margin-right: 6px;
+}
+.action-item em {
+  font-style: normal;
+  color: #58a87a;
+  font-weight: 800;
+}
+.act-detail {
+  display: block;
+  font-size: 10px;
+  color: #9aabbb;
+  margin-top: 2px;
+}
+
+/* 放大浮层 */
+.panel-zoom {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(47, 66, 86, 0.45);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sketch-in 0.25s ease both;
+}
+.zoom-close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fffdf8;
+  border: 2px solid #35506b;
+  text-align: center;
+  line-height: 26px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #2f4256;
+}
+.zoom-shell {
+  width: min(860px, calc(100% - 40px));
+  height: calc(100% - 28px);
+  box-sizing: border-box;
+}
+.zoom-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+.ring-body.big {
+  justify-content: center;
+  padding: 10px 0;
+}
+.ring-breakdown.big {
+  display: flex;
+}
+.big-disc {
+  width: 240px;
+  height: 240px;
+}
+.big-hole {
+  width: 58%;
+  height: 58%;
+}
+.big-hole b {
+  font-size: 26px;
+}
+.big-hole .hole-cap {
+  font-size: 11px;
+}
+.ring-body.big .ring-legend {
+  max-width: 300px;
+}
+.ring-body.big .ring-legend-item {
+  font-size: 13px;
+}
+
+.band-h2 {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+/* 图表压扁：内容垂直居中，减少面板内部留白 */
+.viz-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.viz-panel .ring-body {
+  flex: 1;
+}
+.sc-plot,
+.bar-plot {
+  height: 122px;
+}
+.ring-disc {
+  width: 112px;
+  height: 112px;
+}
+.ring-body.stack .ring-disc {
+  width: 104px;
+  height: 104px;
+}

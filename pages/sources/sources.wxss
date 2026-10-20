@@ -1,0 +1,169 @@
+/* 数据与方法页：手机竖屏单列；宽屏 / 横屏两栏等宽（fr 分配会被表格的最小宽度带偏，
+   改成显式百分比），同一行的两块等高、底边齐平 */
+.two-col.even {
+  align-items: stretch;
+}
+
+/* 供应链表的字段列：手机竖屏收窄，把宽度让给核验方式（宽屏在文件后半段恢复） */
+.src-h1 {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 2px 0 4px;
+}
+.src-h1 .em {
+  color: #e0763c;
+}
+.lead {
+  max-width: 560px;
+  line-height: 1.6;
+}
+.source-item {
+  margin-top: 8px;
+}
+.source-item b {
+  display: block;
+  font-size: 12.5px;
+  margin-bottom: 2px;
+}
+.source-item text {
+  font-size: 11.5px;
+  color: #5b7186;
+  line-height: 1.6;
+}
+.formula {
+  margin-top: 12px;
+  background: #f6f9fc;
+  border: 2px dashed #b9cbdc;
+  border-radius: var(--r-mid);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.formula-line {
+  font-size: 11.5px;
+  color: #2f4256;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.assumption-note {
+  margin-top: 10px;
+  background: #fdf8ea;
+  border: 2px solid #d8b45e;
+  border-radius: var(--r-mid);
+  padding: 8px 12px;
+}
+.assumption-note b {
+  display: block;
+  font-size: 12px;
+  color: #8a6a1c;
+  margin-bottom: 2px;
+}
+.assumption-note text {
+  font-size: 11px;
+  color: #6d5b2c;
+  line-height: 1.6;
+}
+.supply-table .tr {
+  display: flex;
+  border-bottom: 1.5px dashed #e2ebf4;
+  padding: 5px 0;
+  font-size: 11.5px;
+}
+.supply-table .tr.th {
+  color: #7d8f9e;
+  font-size: 10.5px;
+  font-weight: 700;
+  border-bottom: 2px solid #c9d9e9;
+}
+.supply-table .td {
+  padding: 0 6px;
+  flex: none;
+  width: 92px;
+}
+
+/* 宽屏 / 横屏：恢复两栏等宽与表格列宽 */
+@media (min-width: 951px) {
+  .two-col.even {
+    grid-template-columns: calc(50% - 7px) calc(50% - 7px);
+  }
+  .supply-table .td {
+    width: 128px;
+  }
+  .two-col.even .supply-table .td {
+    width: 104px;
+  }
+}
+.supply-table .td.grow {
+  flex: 1;
+  min-width: 0;
+}
+.status-chip {
+  font-size: 10px;
+  font-weight: 700;
+  color: #b3541e;
+  background: #fdf1e8;
+  border: 1.5px solid #e0a37c;
+  border-radius: var(--r-btn);
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.status-chip.warn {
+  color: #47608a;
+  background: #edf3fa;
+  border-color: #b9cbdc;
+}
+.other-units {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.unit-item {
+  font-size: 11px;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.unit-item b {
+  flex: none;
+  width: 110px;
+}
+.unit-item text {
+  color: #9aabbb;
+  font-size: 10px;
+}
+.src-p {
+  display: block;
+  font-size: 11.5px;
+  color: #5b7186;
+  line-height: 1.7;
+  margin-top: 4px;
+}
+.limit-box {
+  margin-top: 14px;
+  background: #fdf1e8;
+  border: 2px solid #e0a37c;
+  border-radius: var(--r-card);
+  box-shadow: 0 5px 0 -1px rgba(60, 85, 112, 0.1);
+  padding: 12px 16px;
+}
+.limit-box b {
+  display: block;
+  font-size: 13px;
+  color: #b3541e;
+  margin-bottom: 3px;
+}
+.limit-box text {
+  font-size: 11.5px;
+  color: #6d4a33;
+  line-height: 1.6;
+}
+.src-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 10.5px;
+  color: #9aabbb;
+}

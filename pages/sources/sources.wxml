@@ -1,0 +1,80 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="sources" />
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">作品说明 / SOURCES</view>
+        <view class="src-h1">让每一个数字，<text class="em">都有来处。</text></view>
+        <view class="muted lead">《一餐之后》把校园食物浪费从抽象倡议转化为可参与的估算实验。页面把“公开资料”与“演示用示例值”分开标注，每个数字都能追溯到自己的来源类型。</view>
+      </view>
+      <button class="quiet-button" bindtap="goHome">← 回到记录一餐</button>
+    </view>
+
+    <view class="two-col even">
+      <view class="panel sketch-in">
+        <view class="kicker">数据构成</view>
+        <view class="panel-h2">三类来源，分开表达</view>
+        <view class="source-item" wx:for="{{blocks}}" wx:key="key">
+          <b>{{item.key}}</b>
+          <text>{{item.text}}</text>
+        </view>
+        <view class="formula">
+          <text class="formula-line" wx:for="{{formulas}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="small-note">水、碳与费用均基于集中配置的演示系数（35L 水 / 1.8kg CO₂e / 4.2 元每公斤），便于替换为有出处的本校数据。记录页的「一份」按所选食物类别由菜单分量现场推算（见各食堂菜品的 portionG 平均值）。</view>
+        <view class="assumption-note">
+          <b>资金路径图的特别说明</b>
+          <text>个人影响页中的 70% 学生餐费支付、20% 学校后勤运营支持、10% 公共财政 / 专项支持，只是本原型为解释“成本由谁承担”设置的演示比例。学费没有被直接分摊，因为现有公开资料无法证明它承担了这份饭；真实比例需要财务、后勤和财政项目材料核验。</text>
+        </view>
+      </view>
+
+      <view class="panel sketch-in">
+        <view class="kicker">供应链</view>
+        <view class="panel-h2">字段怎么核验，而不是现在填什么</view>
+        <view class="supply-table">
+          <view class="tr th"><text class="td">字段</text><text class="td grow">核验方式</text><text class="td">状态</text></view>
+          <view class="tr" wx:for="{{supply}}" wx:key="field">
+            <text class="td">{{item.field}}</text>
+            <text class="td grow">{{item.howToVerify}}</text>
+            <text class="td"><text class="status-chip {{item.status === '示例值' ? '' : 'warn'}}">{{item.status}}</text></text>
+          </view>
+        </view>
+        <view class="kicker" style="margin-top:12px;">同一公开页面的其他餐饮单位</view>
+        <view class="other-units">
+          <view class="unit-item" wx:for="{{otherUnits}}" wx:key="name"><b>{{item.name}}</b><text>{{item.area}}</text></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="panel sketch-in">
+      <view class="kicker">图片来源与授权提示</view>
+      <view class="panel-h2">公开照片，先核验再使用</view>
+      <text class="src-p">{{'后勤管理处公开页面提供的餐厅照片与介绍文字；为不影响评审公平，页面不出现具体校名，也不附原始链接；正式提交前请换上已获授权的来源信息。'}}首页「主要食物」用的五张类别配图由使用者提供，用于区分主食类 / 素菜类 / 荤菜类 / 汤粥类 / 水果副食，不是菜品或食堂实拍，也不作为食物浪费量的计算依据。照片版权归原页面所有；正式公开传播前请确认授权，或替换为自行拍摄、已获授权的照片。</text>
+    </view>
+
+    <view class="two-col even">
+      <view class="panel sketch-in">
+        <view class="kicker">参赛表达</view>
+        <view class="panel-h2">90 秒讲清楚作品</view>
+        <text class="src-p">我们从一张餐桌开始，让学生先选餐厅、拖动“太阳”定下就餐时段、再点图片记录主要食物和剩余量，把个人剩余放进三个餐厅的泔水桶演示中，最后用半份菜、少取一点、打包带走和离席前检查一次，把看见的问题转成可以马上尝试的行动。这里的桶不是传感器，所有重量和容量都是可替换的示例参数；作品的价值在于建立核验路径，而不是制造一个未经证实的排名。</text>
+      </view>
+      <view class="panel sketch-in">
+        <view class="kicker">调研计划</view>
+        <view class="panel-h2">下一版先核验什么</view>
+        <text class="src-p">后续将进行实地观察、桶规格核验、清运时段访谈和约 60 份匿名问卷；同时记录数据授权、采集时间、字段定义和来源版本。只有在获得许可并完成匿名化后，才会把现场数据替换进本页面。</text>
+        <view class="kicker" style="margin-top:12px;">AI 使用说明</view>
+        <text class="src-p">AI 编程工具辅助生成页面初稿；开发者人工修改页面结构、数据模型、交互逻辑和视觉方案。公开资料、示例数据和真实性边界由开发者人工核验和标注。页面中的四种行动场景插画由生成式工具辅助绘制，不包含真实人物照片；AI 未用于伪造调查结果、访谈内容或官方数据。</text>
+      </view>
+    </view>
+
+    <view class="limit-box sketch-in">
+      <b>局限性：当前版本不能回答什么</b>
+      <text>不能声称哪个餐厅实际浪费最多，不能声称真实泔水桶容量、清运频率、校园泔水总量、学生参与人数或策略真实效果。菜单价格、进货时间、菜品评价、等餐时间与泔水数值均需现场或授权资料核验；当前界面中的评价和供应链字段只能作为答辩演示入口。</text>
+    </view>
+    <view class="src-foot">
+      <text>参考方向：联合国粮农组织食物损失与浪费议题、国内高校节约粮食公开倡议</text>
+      <text>访问日期：2026-10-02 · 本页不将搜索摘要作为统计事实</text>
+    </view>
+    <view class="src-foot"><text>构建 1.2.4 · 背景音乐：《光盘小调》（原创欢快版）</text></view>
+  </view>
+</view>

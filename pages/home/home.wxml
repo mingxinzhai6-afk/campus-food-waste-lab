@@ -1,0 +1,162 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="home" />
+
+  <!-- 开场遮罩：只播一次，点击可跳过 -->
+  <view wx:if="{{splash}}" class="intro-splash {{splash === 'out' ? 'leaving' : ''}}" catchtap="dismissSplash">
+    <view class="splash-inner">
+      <image class="splash-mark" src="/images/logo-mark.png" mode="aspectFit" />
+      <view class="splash-copy">
+        <view class="eyebrow">校园餐桌 · 行动实验室</view>
+        <view class="splash-title">一餐之后，<text class="em">校园还剩下什么？</text></view>
+        <view class="splash-sub">从一张校园餐桌开始，记录这一餐，看见每个选择如何汇成共同的行动。</view>
+        <view class="splash-foot"><text class="en">AFTER A MEAL</text><text>校园食物浪费可视化行动实验室</text></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">01 / 记录一餐</view>
+        <view class="muted">记录一餐 → 我的影响 → 校园看板 → 策略实验室 → 每日打卡</view>
+      </view>
+      <view class="step">STEP {{step === 'pick' ? '1 / 2 · 选餐厅' : '2 / 2 · 记录这一餐'}}</view>
+    </view>
+
+    <!-- STEP 1 · 餐厅选择：三张照片卡片 -->
+    <block wx:if="{{step === 'pick'}}">
+      <view class="pick-head sketch-in">
+        <view class="pick-title">先选一个餐厅，开始记录这一餐</view>
+        <view class="muted">点卡片上的「进入并开始记录」；照片来自公开餐饮服务页面。</view>
+      </view>
+      <view class="canteen-grid sketch-in">
+        <view class="canteen-card" wx:for="{{canteens}}" wx:key="id">
+          <view class="canteen-photo-wrap">
+            <image class="canteen-photo" src="{{item.photo}}" mode="aspectFill" />
+            <view class="zone-badge"><text class="zone-dot" />{{item.area}}</view>
+          </view>
+          <view class="canteen-body">
+            <view class="canteen-name">{{item.name}}</view>
+            <view class="canteen-wait">等餐：{{item.waitLabel}} · {{item.openHours}}</view>
+            <view class="canteen-featured">{{item.featured}}</view>
+            <button class="primary-button canteen-enter" bindtap="pickCanteen" data-name="{{item.name}}">进入并开始记录 →</button>
+          </view>
+        </view>
+      </view>
+      <view class="campus-source">照片与餐厅位置来自后勤管理处《后勤餐饮服务指南——美食掠影》（2020-09-18，访问于 2026-10-02）。等餐分钟数为原型演示值。</view>
+    </block>
+
+    <!-- STEP 2 · 记录表单 -->
+    <block wx:else>
+      <view class="two-col">
+        <view class="panel sketch-in">
+          <view class="panel-heading">
+            <view>
+              <view class="kicker">我的一餐 · {{cafeteria}}</view>
+              <view class="panel-h2">今天这一餐，是什么样子的？</view>
+            </view>
+            <button class="quiet-button" bindtap="backToPick">← 换个餐厅</button>
+          </view>
+
+          <view class="field">
+            <view class="field-label">就餐时段<text class="field-hint">拖动太阳选一个时刻，时段自动判定</text></view>
+            <view class="sun-dial" id="sun-dial" catchtouchstart="onSunTouch" catchtouchmove="onSunTouch">
+              <view class="dial-track">
+                <view class="dial-clip">
+                  <view class="dial-ring" style="background: conic-gradient(from 270deg, rgba(143,188,232,.55) 0deg 180deg, transparent 180deg 360deg);"></view>
+                  <view class="dial-ring dial-ring-progress" style="background: conic-gradient(from 270deg, #e0763c 0deg {{sunDeg}}deg, transparent {{sunDeg}}deg 360deg);"></view>
+                  <view class="dial-hole" />
+                </view>
+                <view class="dial-now"><b>{{clockText}}</b><text>当前时段 · {{meal}}</text></view>
+                <view class="dial-tick" wx:for="{{dialTicks}}" wx:key="label" style="left:{{item.left}}%; top:{{item.top}}%; transform: translate(-50%, -50%) rotate({{item.rot}}deg);">
+                  <i class="dial-tick-line" />
+                </view>
+                <text class="dial-tick-label" wx:for="{{dialTicks}}" wx:key="label" style="left:{{item.left}}%; top:{{item.labelTop}}%;">{{item.label}}</text>
+                <view class="dial-sun" style="left:{{sun.left}}%; top:{{sun.top}}%;">
+                  <view class="sun-ray" wx:for="{{sunRays}}" wx:key="*this" style="transform: rotate({{item}}deg) translateY(-14px);" />
+                  <view class="sun-core">
+                    <i class="sun-eye left" /><i class="sun-eye right" /><i class="sun-mouth" />
+                  </view>
+                </view>
+              </view>
+              <view class="dial-ends"><text>早上</text><text>晚上</text></view>
+            </view>
+          </view>
+
+          <view class="field">
+            <view class="field-label">主要食物<text class="field-hint">{{foodCategories.length > 1 ? '已选 ' + foodCategories.length + ' 类 · 再点一次取消' : '点图片选择，可多选 · 至少一类'}}</text></view>
+            <view class="food-grid">
+              <view
+                wx:for="{{foodList}}"
+                wx:key="name"
+                class="food-cell {{foodSelected[item.name] ? 'selected' : ''}}"
+                bindtap="toggleFood"
+                data-name="{{item.name}}"
+              >
+                <image class="food-photo" src="{{item.photo}}" mode="aspectFill" />
+                <view class="food-name"><text class="food-dot" style="background:{{item.dot}};" />{{item.name}}</view>
+                <view class="food-pick">{{foodSelected[item.name] ? '已选择' : '选择'}}</view>
+              </view>
+            </view>
+          </view>
+
+          <view class="field">
+            <view class="field-label">离开餐桌时，还剩下</view>
+            <view class="range-row">
+              <text class="range-cap">几乎没有</text>
+              <slider class="range-slider" min="0" max="0.5" step="0.01" value="{{wasteRate}}" activeColor="#e0763c" backgroundColor="#eae4dc" block-size="16" bindchanging="onWasteChanging" bindchange="onWasteChanging" />
+              <text class="range-cap">大约一半</text>
+            </view>
+          </view>
+
+          <view class="field">
+            <view class="field-label">剩余原因</view>
+            <picker mode="selector" range="{{reasons}}" bindchange="onReasonChange">
+              <view class="picker-value">{{reason}} <text class="picker-caret">▾</text></view>
+            </picker>
+          </view>
+        </view>
+
+        <!-- 右栏：实时估算 -->
+        <view class="live-estimate panel sketch-in">
+          <view class="panel-heading">
+            <view>
+              <view class="kicker">实时估算</view>
+              <view class="panel-h2">随左边的选择即时变化</view>
+            </view>
+          </view>
+          <view class="live-body">
+            <view class="live-ring-col">
+              <view class="ring live-ring" style="{{ringStyle}}">
+                <view class="ring-hole live-hole">
+                  <b>{{wastePercent}}%</b>
+                  <text class="hole-cap">剩余比例</text>
+                </view>
+              </view>
+              <view class="live-caption">对应 {{estimate.text}} kg 食物离开餐盘</view>
+            </view>
+            <!-- 泔水桶 -->
+            <view class="wc">
+              <view class="wc-bucket">
+                <view class="wc-liquid" style="height:{{liquidHeight}};"><text class="wc-surface" /></view>
+                <view class="wc-mark {{item.top ? 'top' : ''}}" wx:for="{{marks}}" wx:key="bottom" style="bottom:{{item.bottom}};"><i class="wc-tick" /><text class="wc-mark-label">{{item.label}}</text></view>
+                <view class="wc-baseline" style="bottom:{{baselineRate * 100}}%;"><i class="wc-bl" /><text class="wc-bl-label">{{baselineLabel}}</text></view>
+              </view>
+              <view class="wc-readout">
+                <b>{{estimate.text}}<text class="wc-unit">kg</text></b>
+                <text class="wc-sub">离开餐盘的这一餐</text>
+              </view>
+            </view>
+          </view>
+          <view class="live-stats">
+            <view class="live-stat {{item.tone}}" wx:for="{{stats}}" wx:key="key">
+              <view class="live-stat-num"><b>{{item.value}}</b><text>{{item.unit}}</text></view>
+              <view class="bar-track"><i style="width:{{item.bar}}%;" /></view>
+            </view>
+          </view>
+          <button class="primary-button cta" bindtap="goImpact">查看这一餐的影响 →</button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

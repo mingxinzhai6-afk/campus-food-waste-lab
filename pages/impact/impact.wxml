@@ -1,0 +1,80 @@
+<view class="page-root" style="{{safeStyle}}">
+  <nav-rail active="impact" />
+  <view class="main">
+    <view class="page-title sketch-in">
+      <view>
+        <view class="eyebrow head-label-lg">02 / 把影响算出来</view>
+        <view class="impact-h1">这一餐，留下了<text class="em">{{servingsText}} 份食物的价值。</text></view>
+        <view class="muted">{{meta}}</view>
+      </view>
+      <button class="quiet-button" bindtap="goHome">← 修改记录</button>
+    </view>
+
+    <!-- 四张影响卡 -->
+    <view class="impact-grid sketch-in">
+      <view class="impact-card {{item.tone}}" wx:for="{{cards}}" wx:key="label">
+        <impact-art kind="{{item.art}}" size="{{44}}" />
+        <text class="card-label">{{item.label}}</text>
+        <view class="card-value"><b>{{item.value}}</b><text class="card-unit">{{item.unit}}</text></view>
+      </view>
+    </view>
+
+    <!-- 资金路径：三来源 → 餐盘 → 泔水桶 -->
+    <view class="panel money-trace sketch-in">
+      <view class="panel-heading">
+        <view>
+          <view class="kicker">一份饭的资金路径</view>
+          <view class="panel-h2">浪费掉的不是一个抽象数字</view>
+        </view>
+      </view>
+      <view class="money-lead">这份剩余食物对应约 <text class="strong">￥{{totalMoney}}</text> 的食物成本。把它从“谁可能承担”追到“最后去了哪里”：</view>
+      <view class="money-flow">
+        <view class="money-col">
+          <view class="money-source {{item.tone}}" wx:for="{{sources}}" wx:key="label">
+            <view class="money-source-text"><b>{{item.label}}</b><text>{{item.note}}</text></view>
+            <view class="money-source-value"><b>{{item.value}}</b><text class="pct">{{item.percent}}</text></view>
+          </view>
+          <view class="money-source unverified">
+            <view class="money-source-text"><b>学费</b><text>本图不强行分摊到这一份饭</text></view>
+            <view class="money-source-value"><b>未计入</b><text class="pct">—</text></view>
+          </view>
+        </view>
+        <view class="money-link" />
+        <view class="money-node plate">
+          <impact-art kind="scrap" size="{{36}}" />
+          <b>餐盘</b>
+          <text class="node-value">汇入 ￥{{totalMoney}}</text>
+          <text class="node-sub">按菜品价格与成本系数换算</text>
+        </view>
+        <view class="money-arrow">
+          <text class="arrow-cap">剩余部分对应</text>
+          <b>￥{{totalMoney}}</b>
+          <text class="arrow-sub">占这一餐成本的 {{wastePercent}}%</text>
+          <view class="dotted-arrow" />
+        </view>
+        <view class="money-node bin">
+          <view class="bin-glyph">🗑</view>
+          <b>泔水桶</b>
+          <text class="node-sub">价值离开餐桌 · 不代表真实清运统计</text>
+        </view>
+      </view>
+      <view class="method-note"><text>i</text><text class="note-p">关键区别：学生支付的是餐费，不等于学费；这里的 70% / 20% / 10% 是成本分摊口径，用于说明“这份饭的钱从哪里来”。</text></view>
+    </view>
+
+    <view class="explanation-band sketch-in">
+      <b>这一餐的解释</b>
+      <text>{{explain}}</text>
+    </view>
+
+    <view class="result-band sketch-in">
+      <view>
+        <view class="kicker">下一步</view>
+        <view class="band-h2">个人的选择，放进校园会发生什么？</view>
+        <text class="muted">看看三个餐厅、不同时段和食物类型的装载情况，再试一种可以马上开始的策略。</text>
+      </view>
+      <button class="primary-button" bindtap="goCampus">进入校园看板 →</button>
+    </view>
+
+    <view class="method-note"><text>i</text><text class="note-p">估算逻辑：食物重量 × 公开系数。金额为食物成本近似值。</text></view>
+  </view>
+</view>
